@@ -1,11 +1,14 @@
 package fr.plopez.servlets;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import fr.plopez.beans.Calcul;
 
 /**
  * Servlet implementation class Calculatrice
@@ -26,8 +29,6 @@ public class Calculatrice extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		this.getServletContext().getRequestDispatcher("/WEB-INF/calculatrice.jsp").forward(request, response);
 	}
 
@@ -35,8 +36,27 @@ public class Calculatrice extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		double nombre1 = 0;
+		double nombre2 = 0;
+		try{
+			nombre1 = Double.parseDouble(request.getParameter("nombre1"));
+		}catch(NumberFormatException e){
+			e.printStackTrace();
+		}
+		
+		try{
+			nombre2 = Double.parseDouble(request.getParameter("nombre2"));
+		}catch(NumberFormatException e){
+			e.printStackTrace();
+		}
+		 
+		String formule = (String)request.getParameter("formule");
+		Calcul calcul = new Calcul(nombre1,nombre2, formule);
+		
+		request.setAttribute("calcul", calcul);
+		
 		doGet(request, response);
+		
 	}
 
 }
